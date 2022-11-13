@@ -1,4 +1,4 @@
-package com.sergeybochkov.ui;
+package com.sb.ui;
 
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;

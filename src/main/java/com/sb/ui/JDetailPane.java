@@ -1,20 +1,22 @@
-package com.sergeybochkov.ui;
+package com.sb.ui;
 
-import com.sergeybochkov.layout.GBC;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
+import javax.swing.*;
 
-public class JOptionPaneWithDetails extends JOptionPane {
+import com.sb.layout.GBC;
 
-    private JPanel pane;
+public final class JDetailPane extends JOptionPane {
+
+    private final ImageIcon iconRight = new ImageIcon(Objects.requireNonNull(JDetailPane.class.getResource("/image/arrowRight.png")));
+    private final ImageIcon iconDown = new ImageIcon(Objects.requireNonNull(JDetailPane.class.getResource("/image/arrowDown.png")));
+
+    private final JPanel pane;
     private JDialog dialog;
-    private ImageIcon icon1 = new ImageIcon(getClass().getResource("/image/arrowRight.png"));
-    private ImageIcon icon2 = new ImageIcon(getClass().getResource("/image/arrowDown.png"));
 
-    private JOptionPaneWithDetails(Object message, Object details) {
+    private JDetailPane(Object message, Object details) {
         pane = new JPanel(new GridBagLayout());
 
         pane.add(new JLabel(message.toString()),
@@ -30,7 +32,7 @@ public class JOptionPaneWithDetails extends JOptionPane {
                         .setInsets(2, 2, 2, 2)
                         .setIpad(2, 2));
 
-        final JLabel detailHeader = new JLabel("<html><b>Details</b>", icon1, SwingConstants.LEFT);
+        final JLabel detailHeader = new JLabel("<html><b>Details</b>", iconRight, SwingConstants.LEFT);
         pane.add(detailHeader,
                 new GBC(0, 2)
                         .setWeight(1.0, 0.0)
@@ -39,7 +41,7 @@ public class JOptionPaneWithDetails extends JOptionPane {
 
         String formattedDetails = "<html>" + details.toString()
                 .replaceAll("\r?\n", "<br/>")
-                .replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+                .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
         final JLabel detailsLabel = new JLabel(formattedDetails);
         pane.add(detailsLabel,
                 new GBC(0, 3)
@@ -50,8 +52,8 @@ public class JOptionPaneWithDetails extends JOptionPane {
 
         detailsLabel.addHierarchyListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(pane);
-            if (window instanceof JDialog)
-                dialog = (JDialog) window;
+            if (window instanceof JDialog dlg)
+                dialog = dlg;
         });
         detailsLabel.setVisible(false);
 
@@ -59,7 +61,7 @@ public class JOptionPaneWithDetails extends JOptionPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 boolean visible = detailsLabel.isVisible();
-                detailHeader.setIcon(visible ? icon1 : icon2);
+                detailHeader.setIcon(visible ? iconRight : iconDown);
                 detailsLabel.setVisible(!visible);
                 if (dialog != null)
                     dialog.pack();
@@ -71,12 +73,8 @@ public class JOptionPaneWithDetails extends JOptionPane {
         return pane;
     }
 
-    public static void showDetailedMessageDialog(Component parentComponent, Object message, String title, int messageType, Object details) throws HeadlessException {
-        JOptionPaneWithDetails detailedOptionPane = new JOptionPaneWithDetails(message, details);
+    public static void showDialog(Component parentComponent, Object message, String title, int messageType, Object details) throws HeadlessException {
+        JDetailPane detailedOptionPane = new JDetailPane(message, details);
         JOptionPane.showMessageDialog(parentComponent, detailedOptionPane.getPane(), title, messageType);
-    }
-
-    public static void main(String[] args) {
-        showDetailedMessageDialog(null, "Hello", "world", JOptionPane.INFORMATION_MESSAGE, "Hello world");
     }
 }

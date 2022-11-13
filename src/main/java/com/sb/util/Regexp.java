@@ -1,8 +1,8 @@
-package com.sergeybochkov.util;
+package com.sb.util;
 
 import java.util.regex.Pattern;
 
-public class Regexp {
+public final class Regexp {
 
     /**
      * The following regexp will make sure that:
@@ -16,7 +16,7 @@ public class Regexp {
      * @param password testing password
      * @return boolean
      */
-    public static boolean strongPassword(String password) {
+    public static boolean isPasswordStrong(String password) {
         return Pattern
                 .compile("(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$")
                 .matcher(password)
@@ -25,10 +25,13 @@ public class Regexp {
     }
 
 
-    public static boolean urlValid(String url) {
+    public static boolean isUrlValid(String url) {
         return Pattern
                 .compile("^(https?://)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([/\\w \\?=.-]*)*/?$")
                 .matcher(url)
                 .matches();
+    }
+
+    private Regexp() {
     }
 }

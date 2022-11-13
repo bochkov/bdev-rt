@@ -1,9 +1,12 @@
-package com.sergeybochkov.util;
+package com.sb.util;
 
-import javax.swing.text.JTextComponent;
 import java.io.*;
+import javax.swing.text.JTextComponent;
 
-public class ContentForwarder {
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public final class ContentForward {
 
     private static final int BUFFER_SIZE = 4089;
 
@@ -14,14 +17,13 @@ public class ContentForwarder {
                 for (int r = 0; r >= 0; r = from.read(buffer))
                     if (r > 0)
                         to.write(buffer, 0, r);
-            }
-            catch (IOException ex) {
-                ex.printStackTrace();
+            } catch (IOException ex) {
+                LOG.warn(ex.getMessage(), ex);
             }
         }, "ContentForwarder").start();
     }
 
-    public static void startForwarding(final InputStream from, final JTextComponent to) throws IOException {
+    public static void startForwarding(final InputStream from, final JTextComponent to) {
         new Thread(() -> {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(from, System.getProperty("file.encoding")))) {
                 String line;
@@ -29,9 +31,8 @@ public class ContentForwarder {
                     to.setText(to.getText() + "\n" + line);
                     to.setCaretPosition(to.getDocument().getLength());
                 }
-            }
-            catch (IOException ex) {
-                ex.printStackTrace();
+            } catch (IOException ex) {
+                LOG.warn(ex.getMessage(), ex);
             }
         }, "ContentForwarder").start();
     }

@@ -1,10 +1,10 @@
-package com.sergeybochkov.ui;
+package com.sb.ui;
 
 import javax.swing.*;
 import javax.swing.text.View;
 import java.awt.*;
 
-public class UI {
+public final class Ui {
 
     /**
      * Вычисляет preferredSize для компонентов Swing, содержащих html
@@ -19,5 +19,8 @@ public class UI {
         float w = view.getPreferredSpan(View.X_AXIS);
         float h = view.getPreferredSpan(View.Y_AXIS);
         return new Dimension((int) Math.ceil(w), (int) Math.ceil(h));
+    }
+
+    private Ui() {
     }
 }

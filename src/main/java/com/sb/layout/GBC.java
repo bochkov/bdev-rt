@@ -1,13 +1,8 @@
-package com.sergeybochkov.layout;
+package com.sb.layout;
 
 import java.awt.*;
 
 public class GBC extends GridBagConstraints {
-
-    {
-        this.fill = GridBagConstraints.HORIZONTAL;
-        this.anchor = GridBagConstraints.WEST;
-    }
 
     public GBC(int gridx, int gridy) {
         this(gridx, gridy, 1, 1);
@@ -18,6 +13,8 @@ public class GBC extends GridBagConstraints {
         this.gridy = gridy;
         this.gridwidth = gridwidth;
         this.gridheight = gridheight;
+        this.fill = GridBagConstraints.HORIZONTAL;
+        this.anchor = GridBagConstraints.EAST;
     }
 
     public GBC setWeight(double weightx, double weighty) {

@@ -1,8 +1,8 @@
-package com.sergeybochkov.util.color;
+package com.sb.util.color;
 
 import java.awt.*;
 
-public class ColorUtil {
+public final class Colors {
 
     public static String toHexString(Color color) {
         String hex = Integer.toHexString(color.getRGB() & 0xffffff);
@@ -10,5 +10,8 @@ public class ColorUtil {
             hex = "000000".substring(0, 6 - hex.length()) + hex;
 
         return "#" + hex.toUpperCase();
+    }
+
+    private Colors() {
     }
 }

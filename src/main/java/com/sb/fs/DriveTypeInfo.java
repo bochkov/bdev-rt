@@ -1,4 +1,4 @@
-package com.sergeybochkov.fs;
+package com.sb.fs;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -20,8 +20,7 @@ public class DriveTypeInfo {
                     if (fsv.isFloppyDrive(root))
                         drives.add(root.toString());
                 break;
-            case OPTICAL:
-            case NOT_WRITABLE:
+            case OPTICAL, NOT_WRITABLE:
                 for (File root : roots)
                     if (!root.canWrite())
                         drives.add(root.toString());

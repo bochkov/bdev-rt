@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'maven-publish'
+}
+
+group = 'com.sb'
+version = '1.0.0.RELEASE'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://maven.sergeybochkov.com"
+    }
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api:2.0.3'
+    compileOnly 'ch.qos.logback:logback-classic:1.4.4'
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    testImplementation 'junit:junit:4.13.2'
+}
+
+
+publishing {
+    repositories {
+        maven {
+            url = "https://maven.sergeybochkov.com/releases"
+            credentials {
+                username = "$reposilite_user"
+                password = "$reposilite_password"
+            }
+        }
+    }
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}

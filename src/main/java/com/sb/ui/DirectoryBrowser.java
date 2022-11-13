@@ -1,7 +1,7 @@
-package com.sergeybochkov.ui;
+package com.sb.ui;
 
-import com.sergeybochkov.fs.DriveTypeInfo;
-import com.sergeybochkov.layout.GBC;
+import com.sb.layout.GBC;
+import com.sb.fs.DriveTypeInfo;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
