@@ -25,7 +25,7 @@ class HumanSizeTest {
 
     @Test
     void testMBytesRu() {
-        HumanSize sz = new HumanSize(65300411L, new HumanSize.Symbols.RU());
+        HumanSize sz = new HumanSize(65300411L, HumanSize.RU);
         Assertions.assertThat(sz).hasToString("65.300411 МБ");
     }
 

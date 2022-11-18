@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class HumanSize {
 
+    public static final Symbols US = new Symbols.US();
+    public static final Symbols RU = new Symbols.RU();
+
     public interface Symbols {
         String[] symbols();
 
@@ -31,7 +34,7 @@ public final class HumanSize {
     private final Symbols symbols;
 
     public HumanSize(Long size) {
-        this(size, new Symbols.US());
+        this(size, US);
     }
 
     @Override
