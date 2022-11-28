@@ -1,5 +1,8 @@
 package sb.bdev.text;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -32,18 +35,28 @@ public final class HumanSize {
 
     private final Long size;
     private final Symbols symbols;
+    private final int round;
 
     public HumanSize(Long size) {
         this(size, US);
+    }
+
+    public HumanSize(Long size, Symbols symbols) {
+        this(size, symbols, -1);
     }
 
     @Override
     public String toString() {
         int rang = 0;
         double b = size;
-        while (b > 1000 && rang < symbols.symbols().length - 1) {
+        while (b > 1024 && rang < symbols.symbols().length - 1) {
             ++rang;
-            b = b / 1000.;
+            b = b / 1024.;
+        }
+        if (round >= 0) {
+            BigDecimal bd = new BigDecimal(Double.toString(b));
+            bd = bd.setScale(round, RoundingMode.HALF_UP);
+            b = bd.doubleValue();
         }
         return String.format("%s %s", b, symbols.symbols()[rang]);
     }
