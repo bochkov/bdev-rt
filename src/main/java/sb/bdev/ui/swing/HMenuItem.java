@@ -16,9 +16,11 @@ public final class HMenuItem extends JMenuItem {
 
     public HMenuItem(Action action) {
         super(action);
+        new HMnemo(action).setup(this);
     }
 
     public HMenuItem(String text) {
         super(text);
+        new HMnemo(text).setup(this);
     }
 }
