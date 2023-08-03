@@ -33,22 +33,22 @@ public final class HumanSize {
         }
     }
 
-    private final Long size;
+    private final Number size;
     private final Symbols symbols;
     private final int round;
 
-    public HumanSize(Long size) {
+    public HumanSize(Number size) {
         this(size, US);
     }
 
-    public HumanSize(Long size, Symbols symbols) {
+    public HumanSize(Number size, Symbols symbols) {
         this(size, symbols, -1);
     }
 
     @Override
     public String toString() {
         int rang = 0;
-        double b = size;
+        double b = size.doubleValue();
         while (b > 1024 && rang < symbols.symbols().length - 1) {
             ++rang;
             b = b / 1024.;

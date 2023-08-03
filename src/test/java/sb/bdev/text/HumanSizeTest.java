@@ -43,7 +43,7 @@ class HumanSizeTest {
 
     @Test
     void testOverflow() {
-        HumanSize sz = new HumanSize((long) Math.pow(2, 64));
+        HumanSize sz = new HumanSize(Math.pow(2, 64));
         Assertions.assertThat(sz.toString()).isNotNull();
     }
 
