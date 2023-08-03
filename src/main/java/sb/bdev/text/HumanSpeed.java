@@ -1,5 +1,8 @@
 package sb.bdev.text;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -33,12 +36,13 @@ public final class HumanSpeed {
 
     private final Number speed;
     private final Symbols symbols;
+    private final int round;
 
     public HumanSpeed(Number size) {
-        this(size, US);
+        this(size, US, -1);
     }
 
-    public HumanSpeed(String speed, Symbols symbols) {
+    public HumanSpeed(String speed, Symbols symbols, int round) {
         this.symbols = symbols;
         String[] parts = speed.split(" ");
         var multy = 0;
@@ -51,6 +55,7 @@ public final class HumanSpeed {
         this.speed = multy == 0 ?
                 value :
                 value * multy * 1000;
+        this.round = round;
     }
 
     @Override
@@ -61,6 +66,13 @@ public final class HumanSpeed {
             res /= 1000;
             ++rang;
         }
-        return String.format("%.2f %s", res, symbols.symbols()[rang]);
+
+        if (round >= 0) {
+            BigDecimal bd = new BigDecimal(Double.toString(res));
+            bd = bd.setScale(round, RoundingMode.HALF_UP);
+            res = bd.doubleValue();
+        }
+
+        return String.format("%s %s", res, symbols.symbols()[rang]);
     }
 }
