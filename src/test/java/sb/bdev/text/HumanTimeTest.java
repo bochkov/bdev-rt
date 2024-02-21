@@ -20,12 +20,12 @@ class HumanTimeTest {
     @Test
     void testHour() {
         HumanTime time = new HumanTime(31257038L);
-        Assertions.assertThat(time).hasToString("8 hours 40 m 57.038 s");
+        Assertions.assertThat(time).hasToString("8 h 40 m 57.038 s");
     }
 
     @Test
     void testDays() {
         HumanTime time = new HumanTime(1231257038L);
-        Assertions.assertThat(time).hasToString("14 days 6 hours 0 m 57.038 s");
+        Assertions.assertThat(time).hasToString("14 d 6 h 0 m 57.038 s");
     }
 }

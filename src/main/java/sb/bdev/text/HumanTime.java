@@ -17,7 +17,7 @@ public final class HumanTime {
         String[] symbols();
 
         class US implements Symbols {
-            private static final String[] TIMES = {"days", "hours", "m", "s"};
+            private static final String[] TIMES = {"d", "h", "m", "s"};
 
             @Override
             public String[] symbols() {
