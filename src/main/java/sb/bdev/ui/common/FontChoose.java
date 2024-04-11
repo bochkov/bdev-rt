@@ -1,17 +1,18 @@
 package sb.bdev.ui.common;
 
+import sb.bdev.ui.HotKey;
+import sb.bdev.ui.layout.GBC;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.font.FontRenderContext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import sb.bdev.ui.HotKey;
-import sb.bdev.ui.layout.GBC;
 
 public final class FontChoose extends JDialog implements ListSelectionListener {
 
@@ -68,7 +69,8 @@ public final class FontChoose extends JDialog implements ListSelectionListener {
         fontSizes.addListSelectionListener(this);
 
         setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-        HotKey.escBy(getRootPane(), new CancelAction(""));
+
+        new HotKey(KeyEvent.VK_ESCAPE, new CancelAction("")).on(getRootPane());
         updateFonts();
     }
 

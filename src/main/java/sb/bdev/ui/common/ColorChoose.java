@@ -1,11 +1,12 @@
 package sb.bdev.ui.common;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import javax.swing.*;
-
 import sb.bdev.ui.HotKey;
 import sb.bdev.ui.layout.GBC;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 public final class ColorChoose extends JDialog {
 
@@ -42,7 +43,7 @@ public final class ColorChoose extends JDialog {
                         .setWeight(1.0, 0.0)
                         .setAnchor(GridBagConstraints.CENTER)
         );
-        HotKey.escBy(getRootPane(), cancelAction);
+        new HotKey(KeyEvent.VK_ESCAPE, cancelAction).on(getRootPane());
     }
 
     public void setInitColor(Color color) {

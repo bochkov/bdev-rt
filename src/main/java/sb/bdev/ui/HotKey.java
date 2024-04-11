@@ -1,32 +1,30 @@
 package sb.bdev.ui;
 
-import java.awt.event.KeyEvent;
+import lombok.RequiredArgsConstructor;
+
 import javax.swing.*;
 
+@RequiredArgsConstructor
 public final class HotKey {
 
-    private HotKey() {
+    private final KeyStroke keyStroke;
+    private final Action action;
+    private final String alias;
+
+    public HotKey(int keyCode, Action action) {
+        this(keyCode, action, action.getClass().getSimpleName());
     }
 
-    public static void actionBy(JRootPane rootPane, String tag, int keyCode, Action action) {
-        actionBy(rootPane, tag, KeyStroke.getKeyStroke(keyCode, 0), action);
+    public HotKey(int keyCode, Action action, String alias) {
+        this(KeyStroke.getKeyStroke(keyCode, 0), action, alias);
     }
 
-    public static void actionBy(JRootPane rootPane, String tag, KeyStroke keyStroke, Action action) {
-        rootPane
-                .getActionMap()
-                .put(tag, action);
-        rootPane
-                .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-                .put(keyStroke, tag);
+    public HotKey(KeyStroke keyStroke, Action action) {
+        this(keyStroke, action, action.getClass().getSimpleName());
     }
 
-    public static void escBy(JRootPane rootPane, Action action) {
-        rootPane
-                .getActionMap()
-                .put("exitAction", action);
-        rootPane
-                .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-                .put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "exitAction");
+    public void on(JComponent component) {
+        component.getActionMap().put(alias, action);
+        component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, alias);
     }
 }

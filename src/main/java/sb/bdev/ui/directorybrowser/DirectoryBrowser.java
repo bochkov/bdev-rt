@@ -1,5 +1,12 @@
 package sb.bdev.ui.directorybrowser;
 
+import sb.bdev.ui.HotKey;
+import sb.bdev.ui.common.CmdPanel;
+import sb.bdev.ui.layout.GBC;
+
+import javax.swing.*;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -9,13 +16,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import javax.swing.*;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
-
-import sb.bdev.ui.HotKey;
-import sb.bdev.ui.common.CmdPanel;
-import sb.bdev.ui.layout.GBC;
 
 public class DirectoryBrowser extends JDialog {
 
@@ -66,8 +66,8 @@ public class DirectoryBrowser extends JDialog {
         pack();
         setLocationRelativeTo(parent);
 
-        HotKey.escBy(getRootPane(), cancelAction);
-        HotKey.actionBy(getRootPane(), "okAction", KeyEvent.VK_ENTER, selectAction);
+        new HotKey(KeyEvent.VK_ESCAPE, cancelAction).on(getRootPane());
+        new HotKey(KeyEvent.VK_ENTER, selectAction).on(getRootPane());
 
         tree.requestFocus();
     }
