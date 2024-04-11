@@ -1,30 +1,26 @@
 package sb.bdev.jdbc;
 
+import lombok.RequiredArgsConstructor;
+
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
+@RequiredArgsConstructor
 public abstract class Jdbc0 implements Jdbc {
 
-    abstract Connection getConnection() throws SQLException;
+    private final Connection con;
 
     @Override
-    public void close() {
-        //
-    }
-
-    @Override
-    public void update(PreparedStatementInit psi) throws SQLException {
-        try (Connection con = getConnection();
-             PreparedStatement ps = psi.statement(con)) {
+    public void update(PreparedStatementCreator psc) throws SQLException {
+        try (PreparedStatement ps = psc.statement(con)) {
             ps.executeUpdate();
         }
     }
 
     @Override
     public void queryRow(String sql, RowCallback rowCallback) throws SQLException {
-        try (Connection con = getConnection();
-             Statement st = con.createStatement()) {
+        try (Statement st = con.createStatement()) {
             try (ResultSet rs = st.executeQuery(sql)) {
                 while (rs.next())
                     rowCallback.processRow(rs);
@@ -33,9 +29,8 @@ public abstract class Jdbc0 implements Jdbc {
     }
 
     @Override
-    public void queryRow(PreparedStatementInit psi, RowCallback rowCallback) throws SQLException {
-        try (Connection con = getConnection();
-             PreparedStatement ps = psi.statement(con)) {
+    public void queryRow(PreparedStatementCreator psc, RowCallback rowCallback) throws SQLException {
+        try (PreparedStatement ps = psc.statement(con)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next())
                     rowCallback.processRow(rs);
@@ -44,9 +39,8 @@ public abstract class Jdbc0 implements Jdbc {
     }
 
     @Override
-    public <T> T query(PreparedStatementInit psi, ExtractedData<T> extractedData, T defaultValue) throws SQLException {
-        try (Connection con = getConnection();
-             PreparedStatement ps = psi.statement(con)) {
+    public <T> T query(PreparedStatementCreator psc, ExtractedData<T> extractedData, T defaultValue) throws SQLException {
+        try (PreparedStatement ps = psc.statement(con)) {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next())
                     return extractedData.extractData(rs);
@@ -57,37 +51,42 @@ public abstract class Jdbc0 implements Jdbc {
 
     @Override
     public void execute(String sql) throws SQLException {
-        try (Connection con = getConnection();
-             Statement st = con.createStatement()) {
+        try (Statement st = con.createStatement()) {
             st.setEscapeProcessing(false);
             st.execute(sql);
         }
     }
 
     @Override
-    public void execute(PreparedStatementInit psi) throws SQLException {
-        try (Connection con = getConnection();
-             PreparedStatement ps = psi.statement(con)) {
+    public void execute(PreparedStatementCreator psc) throws SQLException {
+        try (PreparedStatement ps = psc.statement(con)) {
             ps.execute();
         }
     }
 
     @Override
-    public void call(CallableStatementInit csi) throws SQLException {
-        try (Connection con = getConnection();
-             CallableStatement cs = csi.statement(con)) {
+    public void call(CallableStatementCreator csc) throws SQLException {
+        try (CallableStatement cs = csc.statement(con)) {
             cs.execute();
         }
     }
 
     @Override
-    public Map<String, Object> callQuery(CallableStatementInit csi) throws SQLException {
+    public Map<String, Object> callQuery(CallableStatementCreator csc) throws SQLException {
         Map<String, Object> result = new HashMap<>();
-        try (Connection con = getConnection();
-             CallableStatement cs = csi.statement(con)) {
+        try (CallableStatement cs = csc.statement(con)) {
             cs.execute();
             result.put("result", cs.getObject(1, String.class));
         }
         return result;
+    }
+
+    @Override
+    public void close() {
+        try {
+            con.close();
+        } catch (SQLException ex) {
+            //
+        }
     }
 }

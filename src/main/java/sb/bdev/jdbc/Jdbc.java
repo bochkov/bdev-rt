@@ -7,20 +7,20 @@ public interface Jdbc extends AutoCloseable {
 
     void close();
 
-    void update(PreparedStatementInit psi) throws SQLException;
+    void update(PreparedStatementCreator psi) throws SQLException;
 
     void queryRow(String sql, RowCallback rowCallback) throws SQLException;
 
-    void queryRow(PreparedStatementInit psi, RowCallback rowCallback) throws SQLException;
+    void queryRow(PreparedStatementCreator psi, RowCallback rowCallback) throws SQLException;
 
-    <T> T query(PreparedStatementInit psi, ExtractedData<T> extractedData, T defaultValue) throws SQLException;
+    <T> T query(PreparedStatementCreator psi, ExtractedData<T> extractedData, T defaultValue) throws SQLException;
 
     void execute(String sql) throws SQLException;
 
-    void execute(PreparedStatementInit psi) throws SQLException;
+    void execute(PreparedStatementCreator psi) throws SQLException;
 
-    void call(CallableStatementInit csi) throws SQLException;
+    void call(CallableStatementCreator csi) throws SQLException;
 
-    Map<String, Object> callQuery(CallableStatementInit csi) throws SQLException;
+    Map<String, Object> callQuery(CallableStatementCreator csi) throws SQLException;
 
 }
